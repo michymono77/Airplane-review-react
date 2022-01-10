@@ -1,6 +1,6 @@
 class Airline < ApplicationRecord
   has_many :reviews
-  before_create :slugify
+  before_create :slugify # before creating an instance variable, creating its slug and save.
 
   def slugify
     self.slug = name.parameterize
