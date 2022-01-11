@@ -8,9 +8,23 @@ const Home = styled.div`
   max-width: 1200px;
   margin: 0px auto;
 `
-const Header = styled.div``
-const Subheader = styled.div``
-const Grid = styled.div``
+const Header = styled.div`
+  padding: 100px 100px 10px 100px;
+  h1{
+    font-size:40px;
+  }
+`
+const Subheader = styled.div`
+  font-weight:300;
+  font-size:24px;
+`
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap:20px;
+  width: 100%;
+  padding: 20px;
+`
 
 
 function Airlines() {
@@ -32,13 +46,13 @@ function Airlines() {
 
   return(
     <Home>
-      <div className="header">
+      <Header>
         <h1>OpenFlights</h1>
-        <div className="subheader">Honest, unbiased airline reviews by real people.</div>
-      </div>
-      <div className="grid">
+        <Subheader>Honest, unbiased airline reviews by real people.</Subheader>
+      </Header>
+      <Grid>
         {grid}
-      </div>
+      </Grid>
     </Home>
   )
 }
