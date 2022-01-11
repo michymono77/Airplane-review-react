@@ -7,8 +7,9 @@ const Airline = (props) => {
   const [review, setReview] = useState({})
   const params = useParams();
 
+
   useEffect(()=>{
-    const url = `/api/v1/airlines/${params}`
+    const url = `/api/v1/airlines/${params.slug}.json`
     axios.get(url)
       .then( resp => console.log(resp) )
       .catch( resp => console.log(resp) )
