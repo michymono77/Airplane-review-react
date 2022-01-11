@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Airline from './Airline'
+import styled from 'styled-components';
+
+const Home = styled.div`
+  text-align: center;
+  max-width: 1200px;
+  margin: 0px auto;
+`
+const Header = styled.div``
+const Subheader = styled.div``
+const Grid = styled.div``
+
 
 function Airlines() {
   const [airlines, setAirlines] = useState([]);
@@ -20,7 +31,7 @@ function Airlines() {
   })
 
   return(
-    <div className="home">
+    <Home>
       <div className="header">
         <h1>OpenFlights</h1>
         <div className="subheader">Honest, unbiased airline reviews by real people.</div>
@@ -28,7 +39,7 @@ function Airlines() {
       <div className="grid">
         {grid}
       </div>
-    </div>
+    </Home>
   )
 }
 
