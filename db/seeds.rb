@@ -1,3 +1,7 @@
+puts "Cleaning database..."
+Review.destroy_all
+Airline.destroy_all
+
 puts "Creating Airline seeds..."
 
 airlines = Airline.create([
