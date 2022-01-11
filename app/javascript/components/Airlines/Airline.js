@@ -5,9 +5,13 @@ import styled from 'styled-components';
 const Card = styled.div`
   border: 1px solid #efefef;
   backgroud: #fff;
+  text-align: center;
 `
 const AirlineLogo = styled.div`
   width: 50px;
+  text-align: center;
+  margin: 0 auto;
+  padding-top: 16px;
   img{
     height: 50px;
     width: 50px;

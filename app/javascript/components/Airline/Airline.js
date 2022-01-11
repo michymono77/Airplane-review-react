@@ -1,6 +1,19 @@
-import React from 'react'
+import React, {useState, useEffect } from 'react'
+import axios from 'axios'
+import { useParams } from "react-router-dom"
 
-function Airline() {
+const Airline = (props) => {
+  const [airline, setAirline] = useState({})
+  const [review, setReview] = useState({})
+  const params = useParams();
+
+  useEffect(()=>{
+    const url = `/api/v1/airlines/${params}`
+    axios.get(url)
+      .then( resp => console.log(resp) )
+      .catch( resp => console.log(resp) )
+  }, [])
+
   return (
   <div>This is the Airlines#show view for the app</div>
   )

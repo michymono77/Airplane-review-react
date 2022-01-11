@@ -32,9 +32,7 @@ function Airlines() {
 
   useEffect(()=> {
     axios.get('/api/v1/airlines.json')
-    .then( resp =>
-      {setAirlines(resp.data.data)
-      })
+    .then( resp => {setAirlines(resp.data.data)})
     .catch( resp => console.log(resp))
   }, [airlines.length]);
 
