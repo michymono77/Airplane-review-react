@@ -1,7 +1,8 @@
-import React, {useState, useEffect } from 'react'
+import React, {useState, useEffect, Fragment } from 'react'
 import axios from 'axios'
 import { useParams } from "react-router-dom"
 import Header from './Header'
+import ReviewForm from './ReviewForm'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -22,7 +23,7 @@ const Column2 = styled.div`
   overflow: scroll:
 `
 const Main = styled.div`
-  left-padding: 50px;
+  padding-left: 50px;
 `
 
 const Airline = (props) => {
@@ -42,23 +43,51 @@ const Airline = (props) => {
       .catch( resp => console.log(resp) )
   }, [])
 
+  const handleChange = (e) => {
+    e.preventDefault()
+    // console.log('name:', e.target.name, 'value', e.target.value)
+    setReview(Object.assign({}, review, {[e.target.name]: e.target.value}))
+    console.log('review:', review)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    const csrfToken = document.querySelector('[name=csrf-token]').content
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+
+    const airline_id = airline.data.id
+    axios.post('/api/v1/reviews', {review, airline_id})
+    .then(resp => {
+      debugger
+    })
+    .catch(resp => {})
+  }
+
   return (
   <Wrapper>
-    <Column1>
-      <Main>
     {
       loaded &&
+      <Fragment>
+    <Column1>
+      <Main>
       <Header
         attributes={airline.data.attributes}
         reviews={airline.included}
       />
-    }
       </Main>
       <div className="reviews"></div>
     </Column1>
     <Column2>
-      <div className="review-form">[Review form goes here]</div>
+      <ReviewForm
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        attributes={airline.data.attributes}
+        review={review}
+      />
     </Column2>
+          </Fragment>
+      }
   </Wrapper>
   )
 }
