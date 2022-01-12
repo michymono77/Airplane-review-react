@@ -18,7 +18,7 @@ const RatingBox = styled.div`
   justify-content: center;
   flex-direction: row-reverse;
   position: relative;
-
+  margin-top: 8px;
   input {
     display: none;
   }
@@ -43,39 +43,95 @@ const RatingBox = styled.div`
     background-image: url("data:image/svg+xml,${Hover}");
   }
 `
-const RatingTitle = styled.div``
+const Field = styled.div`
+  border-radius: 4px;
+
+  input {
+    min-height: 50px;
+    border-radius: 4px;
+    border: 1px solid #e6e6e6;
+    margin: 0 0 12px 0;
+    padding: 12px;
+    width:100%;
+  }
+
+  textarea{
+    width: 100%;
+    min-height: 80px;
+    border-radius: 4px;
+    border: 1px solid #e6e6e6;
+    margin: 12px 0;
+    padding: 12px;
+  }
+`
+const Wrapper = styled.div`
+  background: #fff;
+  padding: 16px;
+  background: #000;
+  height:100vh;
+  padding-top: 96px;
+`
+const SubmitBtn = styled.div`
+  text-align: center;
+  color: #fff;
+  background: #90EE90;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 16px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: ease-in-out 0.1s;
+  border: 1px solid #fff;
+  &:hover {
+    background:#74C274;
+    color: #000;
+    border: 1px solid #fff;
+  }
+`
+const Headline = styled.div`
+  padding:16px;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+`
+const RatingTitle = styled.div`
+  font-size: 24px;
+  padding-bottom: 16px;
+  font-weight: bold;
+`
 
 const ReviewForm = (props) => {
   const ratingOptions = [5,4,3,2,1].map ( (score, index) => {
     return (
     <Fragment>
-      <input type="radio" value={score} name="rating" onChange={() => console.log('selected:', score)} id={`rating-${score}`} />
-      <label></label>
+      <input type="radio" value={score} checked={props.review.score == score }name="rating" onChange={() => console.log('selected:', score)} id={`rating-${score}`} />
+      <label onClick={props.setRating.bind(this, score)}></label>
     </Fragment>
     )
   })
   return(
-    <div className="wrapper">
+    <Wrapper>
 
       <form onSubmit={props.handleSubmit}>
-        <div>Have an experience with {props.attributes.name}? Share your Review.</div>
-        <div className="field">
+        <Headline>Have an experience with {props.attributes.name}? Share your Review.</Headline>
+        <Field>
           <input onChange={props.handleChange} value={props.review.title} type="text" name="title" placeholder="Review Title" />
-        </div>
-        <div className="field">
+        </Field>
+        <Field>
           <input onChange={props.handleChange} value={props.review.description} type="text" name="description" placeholder="Review Description" />
-        </div>
-        <div className="field">
+        </Field>
+        <Field>
           <RatingContainer>
-            <div className="rating-title-text">Rate This Airline</div>
+            <RatingTitle className="rating-title-text">Rate This Airline</RatingTitle>
             <RatingBox>
               {ratingOptions}
             </RatingBox>
           </RatingContainer>
-        </div>
-        <button type="submit">Submit Your Review</button>
+        </Field>
+        <SubmitBtn type="submit">Submit Your Review</SubmitBtn>
       </form>
-    </div>
+    </Wrapper>
   )
 }
 
