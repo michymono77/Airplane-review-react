@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React, {Fragment, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Gray from './Stars/Gray'
 import Hover from './Stars/Hover'
@@ -83,11 +83,11 @@ const SubmitBtn = styled.div`
   width: 100%;
   transition: ease-in-out 0.1s;
   border: 1px solid #fff;
-  &:hover {
-    background:#74C274;
-    color: #000;
-    border: 1px solid #fff;
-  }
+    &:hover {
+      background:#74C274;
+      color: #000;
+      border: 1px solid #fff;
+    }
 `
 const Headline = styled.div`
   padding:16px;
@@ -100,16 +100,36 @@ const RatingTitle = styled.div`
   padding-bottom: 16px;
   font-weight: bold;
 `
+const Error = styled.div`
+  width: 100%;
+  color: rgb(255, 80, 44);
+  border: 1px solid rgb(255, 80, 44);
+  border-radius: 4px;
+  margin-top: 8px;
+  text-align:center;
+  padding: 4px;
+`
+
+// const ReviewForm = (props) => {
+//   const ratingOptions = [5,4,3,2,1].map ( (score, index) => {
+//     return (
+//       <Fragment key={Math.random() * Math.random()}>
+//         <input type="radio" value={3} checked={props.review.score == score} name="rating" onChange={() => console.log('selected:', score)} id={`rating-${score}`} />
+//       <label onClick={props.setRating.bind(this, score)}></label>
+//       </Fragment>
+//     )
+//   })
 
 const ReviewForm = (props) => {
-  const ratingOptions = [5,4,3,2,1].map ( (score, index) => {
+  const ratingOptions = [5, 4, 3, 2, 1].map((score, index) => {
     return (
-    <Fragment>
-      <input type="radio" value={score} checked={props.review.score == score }name="rating" onChange={() => console.log('selected:', score)} id={`rating-${score}`} />
-      <label onClick={props.setRating.bind(this, score)}></label>
-    </Fragment>
+      <Fragment key={index}>
+        <input type="radio" value={score} checked={props.review.score == score} onChange={() => console.log('onChange')} name="rating" id={`rating-${score}`} />
+        <label onClick={props.setRating.bind(this, score)}></label>
+      </Fragment>
     )
   })
+
   return(
     <Wrapper>
 
@@ -129,7 +149,11 @@ const ReviewForm = (props) => {
             </RatingBox>
           </RatingContainer>
         </Field>
-        <SubmitBtn type="submit">Submit Your Review</SubmitBtn>
+        <button type="submit">Submit Your Review</button>
+        {
+          props.error &&
+          <Error>{props.error}</Error>
+        }
       </form>
     </Wrapper>
   )

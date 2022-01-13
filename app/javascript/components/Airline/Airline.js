@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useParams } from "react-router-dom"
 import Header from './Header'
 import ReviewForm from './ReviewForm'
+import Review from './Review'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -28,7 +29,7 @@ const Main = styled.div`
 
 const Airline = (props) => {
   const [airline, setAirline] = useState({})
-  const [review, setReview] = useState({})
+  const [review, setReview] = useState({ title: '', description: '', score: 0 })
   const params = useParams();
   const [loaded, setLoaded] = useState(false)
 
@@ -40,7 +41,7 @@ const Airline = (props) => {
         setAirline(resp.data)
         setLoaded(true)
       })
-      .catch( resp => console.log(resp) )
+      .catch(data => console.log('Error', data))
   }, [])
 
   const handleChange = (e) => {
@@ -52,25 +53,59 @@ const Airline = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
     const csrfToken = document.querySelector('[name=csrf-token]').content
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
 
     const airline_id = airline.data.id
     axios.post('/api/v1/reviews', {review, airline_id})
     .then(resp => {
-      const included = [...airline.included, resp.data] // using spread operator
+      const included = [...airline.included, resp.data.data] // using spread operator
       setAirline({...airline, included})
       setReview({ title: '', description: '', score: 0 })
     })
     .catch(resp => {})
   }
 
+  // Create a review
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+
+  //   const airline_id = parseInt(airline.data.id)
+  //   axios.post('/api/v1/reviews', { ...review, airline_id })
+  //     .then((resp) => {
+  //       // setReview([...reviews, resp.data.data])
+  //       setReview({ title: '', description: '', score: 0 })
+  //       setError('')
+  //     })
+  //     .catch(resp => {
+  //       let error
+  //       switch (resp.message) {
+  //         case "Request failed with status code 401":
+  //           error = 'Please log in to leave a review.'
+  //           break
+  //         default:
+  //           error = 'Something went wrong.'
+  //       }
+  //       setError(error)
+  //     })
+  // }
+
   const setRating = (score, e) => {
     e.preventDefault()
     setReview({...review, score})
   }
 
+  let reviews
+  if (loaded && airline.included) {
+    reviews = airline.included.map((item, index)=> {
+      return (
+        <Review
+        key={index}
+        attributes={item.attributes}
+        />
+      )
+    })
+  }
   return (
   <Wrapper>
     {
@@ -83,7 +118,7 @@ const Airline = (props) => {
         reviews={airline.included}
       />
       </Main>
-      <div className="reviews"></div>
+      {reviews}
     </Column1>
     <Column2>
       <ReviewForm
